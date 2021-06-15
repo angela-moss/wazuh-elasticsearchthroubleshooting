@@ -1,0 +1,35 @@
+Wazuh/Elastic Search
+
+Configuración recomendada de seguridad
+
+1.COPIAS DE SEGURIDAD
+
+Ubicación de los usuarios y roles iniciales
+/usr/share/elasticsearch/plugins/opendistro_security/securityconfig/internal_users.yml
+Hacer un backup de internal_users.yml
+
+Situarse en:
+/usr/share/elasticsearch/plugins/opendistro_security/tools
+Para ejecutar el script: "securityadmin"
+
+Crear una carpeta para el backup 
+/usr/share/elasticsearch/plugins/opendistro_security/tools/BackupdeSeguridad
+
+Ejecutar el script, agregrando la ruta de la carpeta que acabo de crear e indicando "localhost" (ya que si no, no funciona bien). 
+./securityadmin.sh -backup /usr/share/elasticsearch/plugins/opendistro_security/tools/BackupdeSeguridad -nhnv -cacert /etc/elasticsearch/certs/root-ca.pem -cert /etc/elasticsearch/certs/admin.pem -key /etc/elasticsearch/certs/admin.key -icl -h localhost
+
+2.Generar hash del password
+
+Situarse en /usr/share/elasticsearch/plugins/opendistro_security/tools
+
+Agregar el password deseado en la siguiente línea y ejecutar el script:
+bash /usr/share/elasticsearch/plugins/opendistro_security/tools/hash.sh -p <new-password>
+
+Apuntar la clave: qwdpok
+Apuntar el hash: $2y$12$wTN4LHxs3hBW7G5UevZCEuhnUJtzGke1N4lYEMiS4l0Dlr8GPtLty
+
+3.Pegar el hash en internal_users.yml (de la carpeta backup, la original no se toca) en el usuario que corresponda. 
+
+4.Para cargar los cambios en internal_users.yml, hay que empujarlos con el script securityadmin
+
+
